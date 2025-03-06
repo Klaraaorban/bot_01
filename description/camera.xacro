@@ -56,3 +56,7 @@
     </gazebo>
 
 </robot>
+
+<!-- MY TODO LIST -->
+<!-- ✔ SLAM Done → ✔ Localization (AMCL) → ✔ Nav2 for Path Planning → ✔ Goal Setting → 
+✔ Obstacle Avoidance & Tuning → 🚀 Autonomous Navigation! -->
