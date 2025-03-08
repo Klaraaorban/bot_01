@@ -19,6 +19,10 @@
         <color rgba="0 0 0 1"/>
     </material>
 
+    <material name="green">
+        <color rgba="0 1 0 1"/>
+    </material>
+
     <!-- BASE LINK -->
 
     <link name="base_link">
@@ -190,6 +194,8 @@
         <material>Gazebo/Blue</material>
     </gazebo>
 
+</robot>
+
     <!-- CASTER WHEEL LINK -->
 <!-- 
     <joint name="caster_wheel_joint" type="fixed">
@@ -220,7 +226,57 @@
         <material>Gazebo/Orange</material>
         <mu1 value = "0.001"/>
         <mu2 value = "0.001"/>
+    </gazebo> 
+    
+
+        <!-- SHIP-LIKE STRUCTURE -->
+    <joint name="ship_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="ship_chassis"/>
+        <origin xyz="2 -1 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Chassis -->
+    <link name="ship_chassis">
+        <!-- Main rectangular body (rear part) -->
+        <visual>
+            <geometry>
+                <box size="0.6 0.4 0.2"/> <!-- Size of the main body -->
+            </geometry>
+            <material name="green"/>
+        </visual>
+
+        <collision>
+            <geometry>
+                <box size="0.6 0.4 0.2"/>
+            </geometry>
+        </collision>
+
+        <!-- Front circular part -->
+        <visual>
+            <geometry>
+                <cylinder radius="0.2" length="0.2"/> <!-- Front rounded part (cylinder) -->
+            </geometry>
+            <origin xyz="0.3 0 0" rpy="0 0 0"/> <!-- Position it at the front -->
+            <material name="green"/>
+        </visual>
+
+        <collision>
+            <geometry>
+                <cylinder radius="0.2" length="0.2"/>
+            </geometry>
+            <origin xyz="0.3 0 0" rpy="0 0 0"/>
+        </collision>
+
+        <!-- Inertial properties of the chassis -->
+        <inertial>
+            <mass value="1.0"/>
+            <inertia  ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+    </link>
+
+    <gazebo reference="ship_chassis">
+        <material>Gazebo/Green</material>
     </gazebo> -->
+
     
-    
-</robot>
