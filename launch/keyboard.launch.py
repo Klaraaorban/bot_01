@@ -1,25 +1,36 @@
-import launch
-import launch_ros.actions
+from launch import LaunchDescription
+from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration
+from launch.actions import DeclareLaunchArgument
 
+import os
+from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
-    return launch.LaunchDescription([
-        # Keyboard Teleoperation
-        launch_ros.actions.Node(
-            package='teleop_twist_keyboard', executable='teleop_twist_keyboard', name='teleop_keyboard',
-            output='screen',
-            remappings=[('/cmd_vel', '/cmd_vel_keyboard')]
+    use_sim_time = LaunchConfiguration('use_sim_time')
+
+    key_params = os.path.join(get_package_share_directory('articubot_one'), 'config', 'keyboard.yaml')
+
+    key_node = Node(
+        package='keyboard',
+        executable='key_node',
+        parameters=[key_params, {'use_sim_time': use_sim_time}]
+    )
+
+    teleop_node = Node(
+        package='teleop_twist_keyboard',
+        executable='teleop_twist_keyboard',
+        name='teleop_node',
+        output='screen',
+        parameters=[key_params, {'use_sim_time': use_sim_time}],
+        remappings=[('/cmd_vel', '/cmd_vel_keyboard')]
+    )
+
+    return LaunchDescription([
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='false',
+            description='Use sim time if true'
         ),
-        
-        # Twist Multiplexer (merging keyboard commands with navigation commands)
-        launch_ros.actions.Node(
-            package='twist_mux', executable='twist_mux', name='twist_mux',
-            parameters=[{
-                'topics': [
-                    {'name': 'navigation', 'topic': '/cmd_vel', 'timeout': 0.5, 'priority': 10},
-                    {'name': 'keyboard', 'topic': '/cmd_vel_keyboard', 'timeout': 0.5, 'priority': 20}
-                ]
-            }],
-            remappings=[('/cmd_vel_out', '/cmd_vel')]
-        )
+        teleop_node
     ])

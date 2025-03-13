@@ -1,0 +1,25 @@
+keyboard_node:
+  ros__parameters:
+    key_mapping:
+      forward: 'w'
+      backward: 's'
+      left: 'a'
+      right: 'd'
+      rotate_left: 'q'
+      rotate_right: 'e'
+      stop: ' '
+
+    scale_linear:
+      x: 0.5
+    scale_linear_turbo:
+      x: 1.0
+
+    scale_angular:
+      yaw: 0.5
+    scale_angular_turbo:
+      yaw: 1.0
+
+    enable_key: 'shift'
+    enable_turbo_key: 't'
+
+    require_enable_key: true
